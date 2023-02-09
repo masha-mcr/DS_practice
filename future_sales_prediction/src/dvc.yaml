@@ -1,0 +1,18 @@
+stages:
+  DQC-raw:
+    cmd: python data/DQC.py ../data/raw
+    deps:
+    - ../data/raw
+    - data/DQC.py
+  ETL:
+    cmd: python data/ETL.py ../data/raw ../data/etl
+    deps:
+    - ../data/raw
+    - data/ETL.py
+    outs:
+    - ../data/etl
+  DQC-etl:
+    cmd: python data/DQC.py ../data/etl
+    deps:
+    - ../data/etl
+    - data/DQC.py

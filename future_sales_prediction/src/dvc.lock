@@ -1,0 +1,37 @@
+schema: '2.0'
+stages:
+  DQC-raw:
+    cmd: python data/DQC.py ../data/raw
+    deps:
+    - path: ../data/raw
+      md5: 317aedeb6fca09eab60a93531fd60b74.dir
+      size: 101606676
+      nfiles: 6
+    - path: data/DQC.py
+      md5: 1c0ad76e2ef5d2534076d0227f2cac12
+      size: 4298
+  ETL:
+    cmd: python data/ETL.py ../data/raw ../data/etl
+    deps:
+    - path: ../data/raw
+      md5: 317aedeb6fca09eab60a93531fd60b74.dir
+      size: 101606676
+      nfiles: 6
+    - path: data/ETL.py
+      md5: 5ce944e135892a7a66ccdf15f9a821d0
+      size: 1756
+    outs:
+    - path: ../data/etl
+      md5: ce9bbab6fcee803efda9f2f4bd11195f.dir
+      size: 103669759
+      nfiles: 5
+  DQC-etl:
+    cmd: python data/DQC.py ../data/etl
+    deps:
+    - path: ../data/etl
+      md5: ce9bbab6fcee803efda9f2f4bd11195f.dir
+      size: 103669759
+      nfiles: 5
+    - path: data/DQC.py
+      md5: 1c0ad76e2ef5d2534076d0227f2cac12
+      size: 4298
