@@ -4,7 +4,7 @@ import re
 import sys
 
 
-def etl(src_path, dst_path):
+def etl(src_path: os.PathLike, dst_path: os.PathLike) -> None:
     sales = pd.read_csv(os.path.join(src_path, 'sales_train.csv'), parse_dates=['date'], dayfirst=True)
     shops = pd.read_csv(os.path.join(src_path, 'shops.csv'))
     items = pd.read_csv(os.path.join(src_path, 'items.csv'))

@@ -1,13 +1,13 @@
 import os.path
-
 import pandas as pd
 import sys
 
-def run_quality_check(**kwargs: pd.DataFrame):
+
+def run_quality_check(**kwargs: pd.DataFrame) -> None:
     pd.set_option('display.float_format', lambda x: '%.5f' % x)
 
     if not all(df in kwargs.keys() for df in ['sales', 'items', 'shops', 'item_categories', 'test']):
-        print('Not enough dataframes provided')
+        raise ValueError('Not enough dataframes provided')
     else:
         for name, df in kwargs.items():
             if df.isna().any().any():

@@ -4,22 +4,22 @@ stages:
     cmd: python data/DQC.py ../data/raw
     deps:
     - path: ../data/raw
-      md5: 317aedeb6fca09eab60a93531fd60b74.dir
-      size: 101606676
-      nfiles: 6
+      md5: 54b3da269fb43396b3e5cfcab5f03e62.dir
+      size: 99362085
+      nfiles: 11
     - path: data/DQC.py
-      md5: 1c0ad76e2ef5d2534076d0227f2cac12
-      size: 4298
+      md5: b4864a3d6dcceb113d58ffe42e90ab0e
+      size: 4317
   ETL:
     cmd: python data/ETL.py ../data/raw ../data/etl
     deps:
     - path: ../data/raw
-      md5: 317aedeb6fca09eab60a93531fd60b74.dir
-      size: 101606676
-      nfiles: 6
+      md5: 54b3da269fb43396b3e5cfcab5f03e62.dir
+      size: 99362085
+      nfiles: 11
     - path: data/ETL.py
-      md5: 5ce944e135892a7a66ccdf15f9a821d0
-      size: 1756
+      md5: 9f0e37970a4c9328e6454aec8fa70689
+      size: 1790
     outs:
     - path: ../data/etl
       md5: ce9bbab6fcee803efda9f2f4bd11195f.dir
@@ -33,5 +33,69 @@ stages:
       size: 103669759
       nfiles: 5
     - path: data/DQC.py
-      md5: 1c0ad76e2ef5d2534076d0227f2cac12
-      size: 4298
+      md5: b4864a3d6dcceb113d58ffe42e90ab0e
+      size: 4317
+  feature_engineering:
+    cmd: python features/feature_engineering.py ../data/etl ../data/features
+    deps:
+    - path: ../data/etl
+      md5: ce9bbab6fcee803efda9f2f4bd11195f.dir
+      size: 103669759
+      nfiles: 5
+    - path: features/feature_engineering.py
+      md5: c8603becd0f4435f4ebf53da9ab1ed9e
+      size: 6418
+    outs:
+    - path: ../data/features
+      md5: d3f9f38e62ed356b48d1993aefd98a0e.dir
+      size: 130278600
+      nfiles: 8
+  feature_extraction:
+    cmd: python features/feature_extractor.py ../data/etl/sales_train.csv ../data/features
+      ../data/unprocessed
+    deps:
+    - path: ../data/etl/sales_train.csv
+      md5: 3dad13cbccd9d30e129b28e7818d9b47
+      size: 97287296
+    - path: ../data/features
+      md5: d3f9f38e62ed356b48d1993aefd98a0e.dir
+      size: 130278600
+      nfiles: 8
+    - path: features/feature_extractor.py
+      md5: 2b3394ec627054fd69b02135cc5aca53
+      size: 12508
+    - path: features/split_config.json
+      md5: 1c971802eea928687857bf4dcb41c776
+      size: 85
+    outs:
+    - path: ../data/unprocessed/train.csv
+      md5: e79c0a5e332cd9423398ca58927a19fc
+      size: 232127512
+    - path: ../data/unprocessed/val.csv
+      md5: 557f3f5feec841d088743813d09c5626
+      size: 6101202
+  preprocessing:
+    cmd: python features/preprocessing.py ../data/unprocessed ../data/processed
+    deps:
+    - path: ../data/unprocessed/train.csv
+      md5: e79c0a5e332cd9423398ca58927a19fc
+      size: 232127512
+    - path: ../data/unprocessed/val.csv
+      md5: 557f3f5feec841d088743813d09c5626
+      size: 6101202
+    - path: features/preprocessing.py
+      md5: 31e1b5341226a6b036232eff03a0927e
+      size: 4705
+    outs:
+    - path: ../data/processed/train_x.csv
+      md5: c5e7ca37408e68ebf61c786a227f93c2
+      size: 694859696
+    - path: ../data/processed/train_y.csv
+      md5: 33f8e6aee88c117a7ecf31a270a8155a
+      size: 25985619
+    - path: ../data/processed/val_x.csv
+      md5: 42395e4a6e6212febdb45308f13d3a84
+      size: 18059268
+    - path: ../data/processed/val_y.csv
+      md5: d4c55b937732219f5f52de56d9dd4823
+      size: 670897

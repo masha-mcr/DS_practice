@@ -16,3 +16,32 @@ stages:
     deps:
     - ../data/etl
     - data/DQC.py
+  feature_engineering:
+    cmd: python features/feature_engineering.py ../data/etl ../data/features
+    deps:
+    - ../data/etl
+    - features/feature_engineering.py
+    outs:
+    - ../data/features
+  feature_extraction:
+    cmd: python features/feature_extractor.py ../data/etl/sales_train.csv ../data/features
+      ../data/unprocessed
+    deps:
+    - ../data/etl/sales_train.csv
+    - ../data/features
+    - features/feature_extractor.py
+    - features/split_config.json
+    outs:
+    - ../data/unprocessed/train.csv
+    - ../data/unprocessed/val.csv
+  preprocessing:
+    cmd: python features/preprocessing.py ../data/unprocessed ../data/processed
+    deps:
+    - ../data/unprocessed/train.csv
+    - ../data/unprocessed/val.csv
+    - features/preprocessing.py
+    outs:
+    - ../data/processed/train_x.csv
+    - ../data/processed/train_y.csv
+    - ../data/processed/val_x.csv
+    - ../data/processed/val_y.csv
