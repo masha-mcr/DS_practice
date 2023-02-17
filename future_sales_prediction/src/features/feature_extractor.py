@@ -3,8 +3,7 @@ import os
 import sys
 from datetime import date
 import json
-from sales_pred_filiankova.features.feature_extractor import FeatureExtractor
-from sales_pred_filiankova.features.validation_schema import ValidationSchema
+from sales_pred_filiankova.features import FeatureExtractor, ValidationSchema
 
 if __name__ == '__main__':
     lookup_datasets = {'shops': pd.read_csv(os.path.join(sys.argv[2], 'shops.csv'),
@@ -33,7 +32,7 @@ if __name__ == '__main__':
         train_start=date(split_config['train_start_y'], split_config['train_start_m'], 1),
         val_start=date(split_config['val_y'], split_config['val_m'], 1))
 
-    train, val = extractor.extract_features_train(train_data, val_data)
+    train, val = extractor.extract_features(train_data=train_data, val_data=val_data)
 
     if not os.path.exists(sys.argv[3]):
         os.mkdir(sys.argv[3])

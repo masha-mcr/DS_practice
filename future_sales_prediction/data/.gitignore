@@ -1,3 +1,4 @@
 /etl
 /features
 /unprocessed
+.gitignore
